@@ -14,15 +14,35 @@ body {
     background-attachment: fixed;
 }
 
-.nav-links {
+@font-face {
+    font-family: 'Absender';
+    src: url('../fontes/absender1.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-image: linear-gradient(to bottom, rgba(17, 0, 255, 1), rgb(86, 0, 120)), url('../imagens/pexels-felix-mittermeier-957061.jpg');
     padding: 25px;
-    max-height: 18px;
+    height: 18px;
     margin: 20px;
     border-radius: 10px;
+    position: relative;
+}
+
+.nav-links {
+    position: absolute;
     list-style-type: none;
     display: flex;
-    background-image: linear-gradient(to bottom, rgba(17, 0, 255, 0.6),rgba(28, 22, 110, 0.4)), url('../imagens/pexels-felix-mittermeier-957061.jpg');
     justify-content: center;
+    align-items: center;
+    align-content: center;
+    font-family: 'absender', sans-serif;
+    left: 0;
+    right: 0;
 }
 
 .nav-links li a {
@@ -35,6 +55,7 @@ body {
     padding-top: 10px;
     gap: 100px;
     transition: all 0.3s ease-in-out;
+    max-height: 15px;
 }
 
 .nav-links li a:hover {
@@ -42,6 +63,32 @@ body {
     font-size: 18px;
 }
 
+#logo {
+    max-height: 100%;
+    border-radius: 50px;
+}
+
+.navlogo {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    height: 50px;
+    width: 15%;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.navlogo p {
+    align-items: center;
+    align-self: center;
+    font-size: 23px;
+    font-family: fantasy;
+    color: white;
+    border: purple;
+    padding: 20px;
+}
 .planeta{
     display: flex;
     justify-content: center;

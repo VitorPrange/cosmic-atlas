@@ -16,16 +16,20 @@ body {
 
 .nav-links {
     padding: 25px;
+    height: 200px;
     max-height: 18px;
     margin: 20px;
     border-radius: 10px;
     list-style-type: none;
     display: flex;
-    background-image: linear-gradient(to bottom, rgba(17, 0, 255, 0.6),rgba(28, 22, 110, 0.4)), url('../imagens/pexels-felix-mittermeier-957061.jpg');
-    justify-content: center;
+    background-image: linear-gradient(to bottom, rgba(17, 0, 255, 0.6), rgba(28, 22, 110, 0.4)), url('../imagens/pexels-felix-mittermeier-957061.jpg');
+    justify-content: left;
+    align-items: center;
+    align-content: center;
+    border: 3px solid red;
 }
 
-.nav-links li a {
+.nav-links li a{
     color: white;
     text-decoration: none;
     border-radius: 10px;
@@ -35,6 +39,8 @@ body {
     padding-top: 10px;
     gap: 100px;
     transition: all 0.3s ease-in-out;
+    max-height: 15px;
+    border: 3px solid red;
 }
 
 .nav-links li a:hover {
@@ -42,34 +48,57 @@ body {
     font-size: 18px;
 }
 
-.planeta{
+.planeta {
     display: flex;
     justify-content: start;
     align-content: space-around;
     flex-direction: column;
     color: white;
     margin: 20px;
-    border: 1px solid red;
-    width: 15vw;
-    height: 35vh;
+    width: 22vw;
+    height: 60vh;
+    transition: transform 0.3s ease;
     border-radius: 15px;
     background-color: rgba(66, 66, 66, 0.9);
 }
 
-.planeta img{
-    padding: 5px;
-    margin: 5px;
-    width: 95%;
-    height: 80%;
-    border-radius: 15px;
+.planeta:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px #001aff;
 }
 
-p{
+.planeta img {
+    padding: 5px;
+    margin: 5px;
+    width: 94%;
+    height: 100%;
+    max-height: 70%;
+    border-radius: 15px;
+    background-color: black;
+}
+
+p {
     padding: 20px;
     font-size: 20px;
 }
 
-.container{
+.container {
     display: flex;
     flex-wrap: wrap;
+}
+
+#logo{
+    max-height: 100%px;
+}
+
+.navlogo{
+    align-content: left;
+    justify-content: left;
+    display: flex;
+    height: 50px;
+    width: 10%;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+    border: 3px solid red;
 }

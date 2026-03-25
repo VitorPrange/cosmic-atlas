@@ -18,8 +18,8 @@ body {
 
 .login{
     display: flex;
-    width: 15vw;
-    height: 50vh;
+    width: 25vw;
+    height: 80vh;
     background-color: rgb(20, 20, 20);
     border-radius: 20px;
     align-content: center;
@@ -28,6 +28,7 @@ body {
     align-items: center;
     gap: 10px;
     font-size: 140%;
+    box-shadow: 0 0 20px #001aff;
 }
 
 .label{
@@ -79,8 +80,8 @@ hr{
 #button:hover{
     width: 85%;
     height: 12%;
-    background-image: linear-gradient(to top, rgba(255, 0, 0, 0.15), transparent), url('../imagens/pexels-felix-mittermeier-957061.jpg');
-    font-size: 18px;
+    background-image:  url('../imagens/pexels-felix-mittermeier-957061.jpg');
+    transform: scale(1.05);
     background-position: center;
 }
 

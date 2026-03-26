@@ -1,0 +1,28 @@
+* {
+    margin: 0px;
+    padding: 0px;
+
+
+}
+
+.tabela-astros img {
+    height: 100px;
+    width: 100px;
+    border-collapse: collapse;
+}
+
+.tabela-astros {
+    padding: 10px;
+}
+
+.tabela-astros thead tr th {
+    width: 200px;
+}
+
+table,th,td {
+    border: 1px solid black;
+}
+
+.align{
+    text-align: center;
+}

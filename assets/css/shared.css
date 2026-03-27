@@ -1,0 +1,175 @@
+/* ═══════════════════════════════════════════════
+   COSMIC ATLAS — shared.css
+   Importado por todas as páginas do site
+   ═══════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Raleway:wght@300;400;600&display=swap');
+
+@font-face {
+    font-family: 'Absender';
+    src: url('../fontes/absender1.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* ── Reset ───────────────────────────────────── */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ── Variáveis globais ───────────────────────── */
+:root {
+    --navy:        #0b0022;
+    --purple-dark: #2a0058;
+    --purple-mid:  #56007a;
+    --purple-glow: rgba(120, 60, 255, 0.6);
+    --blue-glow:   rgba(0, 26, 255, 0.4);
+    --text-main:   #ffffff;
+    --text-muted:  rgba(200, 185, 255, 0.85);
+    --card-bg:     rgba(50, 0, 90, 0.85);
+    --card-border: rgba(120, 60, 255, 0.25);
+    --nav-h:       68px;
+    --nav-margin:  18px;
+    --radius-sm:   8px;
+    --radius-md:   14px;
+    --radius-lg:   20px;
+    --transition:  0.3s ease;
+}
+
+/* ── Scrollbar ───────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--navy); }
+::-webkit-scrollbar-thumb { background: var(--purple-mid); border-radius: 3px; }
+
+/* ══════════════════════════════════════════════
+   NAVBAR — idêntica em todas as páginas
+   ══════════════════════════════════════════════ */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, rgba(17, 0, 200, 0.95) 0%, rgba(86, 0, 140, 0.95) 100%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 0 28px;
+    height: var(--nav-h);
+    margin: var(--nav-margin);
+    border-radius: var(--radius-md);
+    position: relative;
+    border: 1px solid rgba(120, 60, 255, 0.3);
+    box-shadow: 0 4px 30px rgba(0, 10, 255, 0.3), inset 0 1px 0 rgba(255,255,255,0.08);
+    z-index: 100;
+}
+
+.navlogo {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    transition: opacity var(--transition);
+}
+.navlogo:hover { opacity: 0.85; }
+
+.navlogo img {
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid rgba(120, 60, 255, 0.5);
+}
+
+.navlogo p {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: 2px;
+    padding: 0;
+}
+
+.nav-links {
+    position: absolute;
+    left: 0;
+    right: 0;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+}
+
+.nav-links li a {
+    display: inline-block;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    padding: 8px 20px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.78rem;
+    letter-spacing: 1px;
+    transition: all var(--transition);
+}
+
+.nav-links li a:hover,
+.nav-links li a.ativo {
+    background: rgba(255, 255, 255, 0.13);
+    color: #fff;
+    text-shadow: 0 0 12px rgba(180, 140, 255, 0.9);
+}
+
+/* ══════════════════════════════════════════════
+   UTILITÁRIOS COMUNS
+   ══════════════════════════════════════════════ */
+
+/* Seção padrão */
+.secao {
+    padding: 30px 50px;
+}
+
+/* Título de seção */
+.secao-titulo {
+    font-family: 'Cinzel', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: 2px;
+    margin-bottom: 28px;
+    padding-left: 18px;
+    border-left: 3px solid var(--purple-glow);
+    text-shadow: 0 0 20px rgba(80, 30, 255, 0.6);
+}
+
+/* Card genérico */
+.card-box {
+    background: linear-gradient(135deg, rgba(60, 0, 100, 0.85), rgba(20, 0, 60, 0.9));
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-md);
+    padding: 28px;
+    color: var(--text-main);
+    box-shadow: 0 0 25px rgba(0, 26, 255, 0.2);
+    transition: transform var(--transition), box-shadow var(--transition);
+}
+.card-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 35px rgba(0, 26, 255, 0.4);
+}
+.card-box h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: rgba(200, 180, 255, 1);
+    letter-spacing: 1px;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(120, 60, 255, 0.3);
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .navbar { margin: 10px; padding: 0 16px; }
+    .nav-links li a { padding: 6px 12px; font-size: 0.7rem; }
+    .navlogo p { font-size: 0.9rem; }
+    .secao { padding: 20px 16px; }
+}

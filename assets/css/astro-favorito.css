@@ -1,3 +1,5 @@
+@import url('navbar.css');
+
 * {
     margin: 0px;
     padding: 0px;
@@ -5,10 +7,16 @@
 
 }
 
+body {
+    background-image: linear-gradient(to top, rgba(0.75, 0, 0, 0.75), transparent), url('../imagens/pexels-felix-mittermeier-957061.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
 .tabela-astros img {
     height: 100px;
     width: 100px;
-    border-collapse: collapse;
 }
 
 .tabela-astros {
@@ -19,10 +27,142 @@
     width: 200px;
 }
 
-table,th,td {
+table,
+th,
+td {
     border: 1px solid black;
+    padding: 10px;
+    border-collapse: collapse;
 }
 
-.align{
+.align {
     text-align: center;
+}
+
+.tabela {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    margin: 20px;
+    border-radius: 15px;
+    width: 100%;
+}
+
+table tbody tr:hover {
+    transform: scale(1.1);
+}
+
+table {
+    width: 80%;
+    border-radius: 15px;
+    box-shadow: 0px 0px 15px #001aff;
+    color: white;
+
+}
+
+tbody tr:nth-child(even) {
+    background-image: linear-gradient(to top, rgb(86, 0, 120), rgba(17, 0, 255, 1), rgb(86, 0, 120));
+}
+
+tbody tr:nth-child(odd) {
+    background-image: linear-gradient(to top, rgb(86, 0, 120), rgb(86, 0, 120));
+}
+
+tbody tr {
+    transition: all 0.3s ease;
+}
+
+thead tr {
+    background-image: linear-gradient(to top, rgba(17, 0, 255, 1), rgb(86, 0, 120));
+}
+
+.ol {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+    margin-top: 50px;
+    color: white;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 25px;
+}
+
+.ol h1 {
+    color: white;
+}
+
+.quasares {
+
+    background: linear-gradient(90deg, #6a00ff, #00d4ff, #ffffff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.gigantes {
+    background: linear-gradient(90deg, #ff0000, #ff7300, #ffd000);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.nebulosas {
+    background: linear-gradient(90deg, #ff00cc, #3333ff, #00ffff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.formulario {
+
+    gap: 20px;
+    padding: 20px;
+    font-size: 19px;
+    margin: 250px;
+    width: 800px;
+    justify-self: center;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    color: white;
+    box-shadow: 0px 0px 25px #001aff;
+    background-image: linear-gradient(to top, rgb(86, 0, 120), rgba(17, 0, 255, 1), rgb(86, 0, 120));
+}
+
+.formulario h2{
+    padding-bottom: 15px;
+}
+
+.formulario input:not([type="radio"]):not([type="checkbox"]), 
+.formulario textarea,
+.formulario select{
+    border-radius: 10px;
+    border: none;
+    height: 35px;
+    
+}
+
+.formulario button {
+    border-radius: 10px;
+    border: none;
+    height: 45px;
+    width: 50%;
+    align-self: center;
+    transition: all 0.3s ease;
+}
+
+.formulario button:hover{
+    background-image: linear-gradient(to top, rgb(86, 0, 120), rgba(17, 0, 255, 1), rgb(86, 0, 120));
+    scale: 1.1;
+    box-shadow: 0px 0px 15px #000000;
+    color: white;
+}
+
+.grupo{
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-direction: row;
 }

@@ -85,6 +85,7 @@ thead tr {
     align-content: center;
     text-align: center;
     margin-top: 50px;
+    padding: 20px;
     color: white;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: 25px;
@@ -94,23 +95,42 @@ thead tr {
     color: white;
 }
 
+.ol li{
+    padding: 5px;
+}
+
 .quasares {
 
     background: linear-gradient(90deg, #6a00ff, #00d4ff, #ffffff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    transition: all 0.3s ease;
 }
 
 .gigantes {
     background: linear-gradient(90deg, #ff0000, #ff7300, #ffd000);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    transition: all 0.3s ease;
 }
 
 .nebulosas {
     background: linear-gradient(90deg, #ff00cc, #3333ff, #00ffff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    transition: all 0.3s ease;
+}
+
+.quasares:hover{
+    scale: 1.2;
+}
+
+.gigantes:hover{
+    scale: 1.2;
+}
+
+.nebulosas:hover{
+    scale: 1.2;
 }
 
 .formulario {
@@ -118,7 +138,7 @@ thead tr {
     gap: 20px;
     padding: 20px;
     font-size: 19px;
-    margin: 250px;
+    margin: 40px;
     width: 800px;
     justify-self: center;
     border-radius: 10px;
@@ -142,6 +162,16 @@ thead tr {
     border: none;
     height: 35px;
     
+}
+
+.formulario input:not([type="radio"]):not([type="checkbox"]):focus, 
+.formulario textarea:focus,
+.formulario select:focus{
+     box-shadow: 0px 0px 25px #000000;
+}
+
+.formulario textarea{
+    font-size: 20px;
 }
 
 .formulario button {

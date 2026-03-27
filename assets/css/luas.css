@@ -1,4 +1,5 @@
 @import url('shared.css');
+@import url('navbar.css');
 
 body {
     background-color: #020010;
@@ -13,7 +14,6 @@ body {
     font-family: 'Raleway', sans-serif;
 }
 
-/* ── Hero ────────────────────────────────────── */
 .hero {
     text-align: center;
     padding: 70px 20px 50px;
@@ -52,7 +52,6 @@ body {
     margin: 30px auto 0;
 }
 
-/* ── Duas colunas ────────────────────────────── */
 .duas-colunas {
     display: flex;
     gap: 25px;

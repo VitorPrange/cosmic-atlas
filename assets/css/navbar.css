@@ -5,6 +5,11 @@
     font-style: normal;
 }
 
+*{
+    padding: 0px;
+    margin: 0px;
+}
+
 
 
 .navbar {
@@ -44,9 +49,13 @@
     max-height: 15px;
 }
 
-.nav-links li a:hover {
-    background-image: linear-gradient(to top, rgba(255, 0, 0, 0.15), transparent), url('../imagens/pexels-felix-mittermeier-957061.jpg');
+.nav-links li a:hover{
+    background-image: url('../imagens/pexels-felix-mittermeier-957061.jpg');
     font-size: 18px;
+}
+
+.nav-links li a.ativo{
+    
 }
 
 #logo {

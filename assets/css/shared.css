@@ -13,6 +13,11 @@
 }
 
 /* ── Reset ───────────────────────────────────── */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 /* ── Variáveis globais ───────────────────────── */
 :root {
@@ -25,14 +30,18 @@
     --text-muted:  rgba(200, 185, 255, 0.85);
     --card-bg:     rgba(50, 0, 90, 0.85);
     --card-border: rgba(120, 60, 255, 0.25);
+    --nav-h:       68px;
+    --nav-margin:  18px;
+    --radius-sm:   8px;
+    --radius-md:   14px;
+    --radius-lg:   20px;
     --transition:  0.3s ease;
 }
 
 /* ── Scrollbar ───────────────────────────────── */
-
-/* ══════════════════════════════════════════════
-   NAVBAR — idêntica em todas as páginas
-   ══════════════════════════════════════════════ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--navy); }
+::-webkit-scrollbar-thumb { background: var(--purple-mid); border-radius: 3px; }
 
 /* ══════════════════════════════════════════════
    UTILITÁRIOS COMUNS
@@ -79,4 +88,12 @@
     margin-bottom: 18px;
     padding-bottom: 12px;
     border-bottom: 1px solid rgba(120, 60, 255, 0.3);
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .navbar { margin: 10px; padding: 0 16px; }
+    .nav-links li a { padding: 6px 12px; font-size: 0.7rem; }
+    .navlogo p { font-size: 0.9rem; }
+    .secao { padding: 20px 16px; }
 }

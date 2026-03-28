@@ -13,11 +13,6 @@
 }
 
 /* ── Reset ───────────────────────────────────── */
-*, *::before, *::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
 
 /* ── Variáveis globais ───────────────────────── */
 :root {
@@ -39,9 +34,6 @@
 }
 
 /* ── Scrollbar ───────────────────────────────── */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--navy); }
-::-webkit-scrollbar-thumb { background: var(--purple-mid); border-radius: 3px; }
 
 /* ══════════════════════════════════════════════
    UTILITÁRIOS COMUNS

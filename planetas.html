@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planetas</title>
+    <title>Sistema Solar — Cosmic Atlas</title>
     <link rel="icon" type="image/png" href="assets/imagens/favicon.png">
     <link rel="stylesheet" href="assets/css/planetas.css">
+    <script src="assets/js/autenticacao.js"></script>
 </head>
 
 <body>
+
     <nav class="navbar">
 
         <div class="navlogo">
@@ -19,12 +20,15 @@
 
         <ul class="nav-links">
             <li><a href="Home.html">Início</a></li>
-            <li><a href="planetas.html" class="ativo">Sistema Solar</a></li>
+            <li><a href="planetas.html">Sistema Solar</a></li>
             <li><a href="buraconegro.html">Buraco Negro</a></li>
             <li><a href="luas.html">Luas</a></li>
-            <li><a href="astro-favorito.html">Astros</a></li>
+            <li><a href="astro-favorito.html" class="ativo">Astros</a></li>
         </ul>
 
+        <div class="navADM">
+            <img src="assets/imagens/pngwing.com.png" alt="screw" id="adm" onclick="verificarSenha(event)">
+        </div>
     </nav>
 
     <div class="container">
@@ -32,42 +36,34 @@
             <img src="assets/imagens/sol-girando.gif" alt="Sol">
             <p>A estrela central do Sistema Solar que fornece luz, calor e energia.</p>
         </div>
-
         <div class="planeta">
             <img src="assets/imagens/mercurio-girando.gif" alt="Mercúrio">
             <p>O menor planeta, mais próximo do Sol, com temperaturas extremamente variáveis.</p>
         </div>
-
         <div class="planeta">
             <img src="assets/imagens/venus-girando.gif" alt="Vênus">
             <p>Um planeta extremamente quente, com atmosfera densa e efeito estufa intenso.</p>
         </div>
-
         <div class="planeta">
             <img src="assets/imagens/terra-girando.gif" alt="Terra">
             <p>Nosso planeta, com água líquida, atmosfera estável e condições ideais para vida.</p>
         </div>
-
         <div class="planeta">
             <img src="assets/imagens/marte-girando.gif" alt="Marte">
             <p>Conhecido como planeta vermelho, com evidências de água líquida no passado.</p>
         </div>
-
         <div class="planeta">
             <img src="assets/imagens/jupiter-girando.gif" alt="Júpiter">
             <p>O maior planeta, gigante gasoso com tempestades intensas e muitas luas.</p>
         </div>
-
         <div class="planeta">
             <img src="assets/imagens/saturno-girando.gif" alt="Saturno">
             <p>Gigante gasoso famoso por seus anéis compostos por gelo, rochas e poeira.</p>
         </div>
-
         <div class="planeta">
             <img src="assets/imagens/urano-girando.gif" alt="Urano">
             <p>Um gigante gelado inclinado, com rotação lateral e coloração azul-esverdeada.</p>
         </div>
-
         <div class="planeta">
             <img src="assets/imagens/netuno-girando.gif" alt="Netuno">
             <p>O planeta mais distante, com coloração azul intensa e ventos extremamente fortes.</p>
@@ -75,5 +71,4 @@
     </div>
 
 </body>
-
 </html>

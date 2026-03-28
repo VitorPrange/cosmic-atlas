@@ -5,7 +5,7 @@
     font-style: normal;
 }
 
-*{
+* {
     padding: 0px;
     margin: 0px;
 }
@@ -49,14 +49,12 @@
     max-height: 15px;
 }
 
-.nav-links li a:hover{
+.nav-links li a:hover {
     background-image: url('../imagens/pexels-felix-mittermeier-957061.jpg');
     font-size: 18px;
 }
 
-.nav-links li a.ativo{
-    
-}
+.nav-links li a.ativo {}
 
 #logo {
     max-height: 100%;
@@ -83,4 +81,18 @@
     color: white;
     border: purple;
     padding: 20px;
+}
+
+.navADM img {
+    width: 40px;
+}
+
+.navADM:hover {
+    cursor: pointer;
+}
+
+.navADM {
+    display: block;
+    position: relative;
+    z-index: 2;
 }

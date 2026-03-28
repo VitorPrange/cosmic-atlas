@@ -6,21 +6,29 @@
     <title>Buraco Negro</title>
     <link rel="icon" type="image/png" href="assets/imagens/favicon.png">
     <link rel="stylesheet" href="assets/css/buraconegro.css">
+    <script src="assets/js/autenticacao.js"></script>
 </head>
+
 <body>
 
     <nav class="navbar">
+
         <div class="navlogo">
-            <img src="assets/imagens/buraco-negro-girando.gif" alt="Logo" id="logo">
-            <p>Cosmic Atlas</p>
+            <img src="assets/imagens/buraco-negro-girando.gif" alt="Sol" id="logo">
+            <P>Cosmic Atlas</P>
         </div>
+
         <ul class="nav-links">
             <li><a href="Home.html">Início</a></li>
             <li><a href="planetas.html">Sistema Solar</a></li>
-            <li><a href="buraconegro.html" class="ativo">Buraco Negro</a></li>
+            <li><a href="buraconegro.html">Buraco Negro</a></li>
             <li><a href="luas.html">Luas</a></li>
-            <li><a href="astro-favorito.html">Astros</a></li>
+            <li><a href="astro-favorito.html" class="ativo">Astros</a></li>
         </ul>
+
+        <div class="navADM">
+            <img src="assets/imagens/pngwing.com.png" alt="screw" id="adm" onclick="verificarSenha(event)">
+        </div>
     </nav>
 
     <div class="buraconegro-section">

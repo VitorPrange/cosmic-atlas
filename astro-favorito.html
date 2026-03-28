@@ -7,6 +7,7 @@
     <title>Astro Favorito</title>
     <link rel="icon" type="image/png" href="assets/imagens/favicon.png">
     <link rel="stylesheet" href="assets/css/astro-favorito.css">
+    <script src="assets/js/autenticacao.js"></script>
 </head>
 
 <body>
@@ -26,6 +27,9 @@
             <li><a href="astro-favorito.html" class="ativo">Astros</a></li>
         </ul>
 
+        <div class="navADM">
+            <img src="assets/imagens/pngwing.com.png" alt="screw" id="adm" onclick="verificarSenha(event)">
+        </div>
     </nav>
 
     <div class="tabela">
@@ -181,10 +185,12 @@
 
         <div class="grupo">
             <label>Possui luz própria?</label>
-            <label for="luz_sim">Sim</label>
             <input type="radio" id="luz_sim" name="luz" value="sim">
-            <label for="luz_nao">Não</label>
+            <label for="luz_sim">Sim</label>
+            
             <input type="radio" id="luz_nao" name="luz" value="nao">
+            <label for="luz_nao">Não</label>
+            
         </div>
 
 
@@ -192,14 +198,14 @@
         <div class="grupo">
             <label>Características:</label>
 
-            <label for="gasoso">Gasoso</label>
             <input type="checkbox" id="gasoso" name="caracteristicas" value="gasoso">
-
-            <label for="rochoso">Rochoso</label>
+            <label for="gasoso">Gasoso</label>
+            
             <input type="checkbox" id="rochoso" name="caracteristicas" value="rochoso">
-
-            <label for="possui_anel">Possui anéis</label>
+            <label for="rochoso">Rochoso</label>
+            
             <input type="checkbox" id="possui_anel" name="caracteristicas" value="anel">
+            <label for="possui_anel">Possui anéis</label>
         </div>
 
         <label for="descricao">Descrição:</label>

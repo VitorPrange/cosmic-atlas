@@ -124,7 +124,7 @@ body {
     table-layout: fixed;
     width: 90%;
     color: white;
-    height: 50vh;
+    height: 35vh;
     background-image: linear-gradient(to top, #0f2027, #203a43, #2c5364);
     border-radius: 15px;
     overflow: hidden;

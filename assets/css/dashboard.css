@@ -195,7 +195,7 @@ tbody tr:hover{
 }
 
 .tabelaplanetas{
-  height: 50vh;
+  height: 72vh;
   background-image: linear-gradient(to top, #0f2027, #203a43, #2c5364);
   border-radius: 15px;
   overflow: hidden;

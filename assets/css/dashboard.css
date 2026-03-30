@@ -181,6 +181,17 @@ th{
   border-top:1px solid grey;
   border-bottom: 1px solid gray;
   padding: 10px;
+  text-align: center;
+}
+
+td{
+  padding: 12px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+  text-align: center;
+}
+
+tbody tr:hover{
+  background: rgba(89, 0, 255, 0.12);
 }
 
 .tabelaplanetas{

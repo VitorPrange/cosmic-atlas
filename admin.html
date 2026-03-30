@@ -358,16 +358,20 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 
 <!-- MAIN -->
 <main class="main">
+    
   <div class="topbar">
+
     <div class="page-heading">
       <h1 id="page-title">Dashboard</h1>
       <p id="page-sub">Sistema Solar em tempo real</p>
     </div>
+
     <div class="topbar-actions">
       <div class="search-box" id="search-wrap">🔍 <input id="search-input" type="text" placeholder="Buscar..." oninput="doSearch(this.value)"/></div>
       <button class="btn btn-ghost" id="btn-sec" onclick="toast('Dados atualizados!','success')" style="display:none">↻ Atualizar</button>
       <button class="btn btn-primary" id="btn-pri" onclick="handlePrimary()">+ Novo Planeta</button>
     </div>
+
   </div>
 
   <!-- DASHBOARD -->

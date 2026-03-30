@@ -13,6 +13,11 @@
 }
 
 /* ── Reset ───────────────────────────────────── */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 /* ── Variáveis globais ───────────────────────── */
 :root {
@@ -34,6 +39,85 @@
 }
 
 /* ── Scrollbar ───────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--navy); }
+::-webkit-scrollbar-thumb { background: var(--purple-mid); border-radius: 3px; }
+
+/* ══════════════════════════════════════════════
+   NAVBAR — idêntica em todas as páginas
+   ══════════════════════════════════════════════ */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, rgba(17, 0, 200, 0.95) 0%, rgba(86, 0, 140, 0.95) 100%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 0 28px;
+    height: var(--nav-h);
+    margin: var(--nav-margin);
+    border-radius: var(--radius-md);
+    position: relative;
+    border: 1px solid rgba(120, 60, 255, 0.3);
+    box-shadow: 0 4px 30px rgba(0, 10, 255, 0.3), inset 0 1px 0 rgba(255,255,255,0.08);
+    z-index: 100;
+}
+
+.navlogo {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    transition: opacity var(--transition);
+}
+.navlogo:hover { opacity: 0.85; }
+
+.navlogo img {
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid rgba(120, 60, 255, 0.5);
+}
+
+.navlogo p {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: 2px;
+    padding: 0;
+}
+
+.nav-links {
+    position: absolute;
+    left: 0;
+    right: 0;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+}
+
+.nav-links li a {
+    display: inline-block;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    padding: 8px 20px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.78rem;
+    letter-spacing: 1px;
+    transition: all var(--transition);
+}
+
+.nav-links li a:hover,
+.nav-links li a.ativo {
+    background: rgba(255, 255, 255, 0.13);
+    color: #fff;
+    text-shadow: 0 0 12px rgba(180, 140, 255, 0.9);
+}
 
 /* ══════════════════════════════════════════════
    UTILITÁRIOS COMUNS
@@ -88,4 +172,18 @@
     .nav-links li a { padding: 6px 12px; font-size: 0.7rem; }
     .navlogo p { font-size: 0.9rem; }
     .secao { padding: 20px 16px; }
+}
+
+.navADM img {
+    width: 40px;
+}
+
+.navADM:hover {
+    cursor: pointer;
+}
+
+.navADM {
+    display: block;
+    position: relative;
+    z-index: 2;
 }

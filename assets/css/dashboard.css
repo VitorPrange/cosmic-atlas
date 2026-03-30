@@ -156,6 +156,11 @@ body {
   background-image: linear-gradient(to left, #008170, #1900ff);
   border: none;
   color: white;
+  transition: all 0.3s ease;
+}
+
+.busca button:hover{
+  scale: 1.1;
 }
 
 .busca input{

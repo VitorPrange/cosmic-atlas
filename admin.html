@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CosmosAdmin — Painel Administrativo</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Syne:wght@300;400;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#050810;--surface:#0c1120;--card:#111827;--border:#1e2d4a;
+  --accent:#3b82f6;--accent2:#a855f7;--accent3:#06b6d4;
+  --green:#10b981;--orange:#f59e0b;--red:#ef4444;
+  --text:#e2e8f0;--muted:#64748b;--sidebar-w:240px;
+}
+html,body{height:100%}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);display:flex;overflow:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:
+  radial-gradient(1px 1px at 10% 15%,rgba(255,255,255,.6) 0%,transparent 100%),
+  radial-gradient(1px 1px at 30% 60%,rgba(255,255,255,.4) 0%,transparent 100%),
+  radial-gradient(1px 1px at 55% 25%,rgba(255,255,255,.5) 0%,transparent 100%),
+  radial-gradient(1px 1px at 75% 80%,rgba(255,255,255,.3) 0%,transparent 100%),
+  radial-gradient(1px 1px at 90% 40%,rgba(255,255,255,.5) 0%,transparent 100%),
+  radial-gradient(1px 1px at 20% 90%,rgba(255,255,255,.4) 0%,transparent 100%),
+  radial-gradient(1px 1px at 65% 50%,rgba(255,255,255,.3) 0%,transparent 100%),
+  radial-gradient(1px 1px at 42% 75%,rgba(255,255,255,.5) 0%,transparent 100%),
+  radial-gradient(1px 1px at 85% 10%,rgba(255,255,255,.4) 0%,transparent 100%),
+  radial-gradient(1px 1px at 5% 50%,rgba(255,255,255,.3) 0%,transparent 100%);
+  pointer-events:none;z-index:0}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar-w);height:100vh;background:linear-gradient(180deg,#0a1020 0%,#070e1c 100%);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;left:0;top:0;z-index:100;flex-shrink:0}
+.sidebar-logo{padding:28px 24px 20px;border-bottom:1px solid var(--border)}
+.logo-icon{font-size:1.8rem;line-height:1;margin-bottom:6px}
+.logo-title{font-family:'Orbitron',sans-serif;font-size:1.05rem;font-weight:800;letter-spacing:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo-sub{font-size:.65rem;color:var(--muted);letter-spacing:3px;text-transform:uppercase;margin-top:2px}
+.sidebar-nav{padding:20px 12px;flex:1;display:flex;flex-direction:column;gap:2px;overflow-y:auto}
+.nav-section-label{font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);padding:14px 12px 6px}
+.nav-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;cursor:pointer;font-size:.85rem;font-weight:400;color:var(--muted);transition:all .2s;position:relative;user-select:none}
+.nav-item:hover{background:rgba(59,130,246,.08);color:var(--text)}
+.nav-item.active{background:linear-gradient(90deg,rgba(59,130,246,.18),rgba(168,85,247,.08));color:var(--accent);font-weight:600}
+.nav-item.active::before{content:'';position:absolute;left:0;top:20%;bottom:20%;width:3px;border-radius:2px;background:linear-gradient(180deg,var(--accent),var(--accent2))}
+.nav-icon{font-size:1rem;width:20px;text-align:center}
+.nav-badge{margin-left:auto;background:var(--accent2);color:#fff;font-size:.6rem;padding:2px 7px;border-radius:99px;font-weight:600}
+.nav-badge.red{background:var(--red)}
+.sidebar-footer{padding:16px;border-top:1px solid var(--border)}
+.user-card{display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;background:rgba(255,255,255,.03)}
+.avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;color:#fff;flex-shrink:0}
+.user-info{flex:1;min-width:0}
+.user-name{font-size:.8rem;font-weight:600}
+.user-role{font-size:.65rem;color:var(--muted)}
+
+/* MAIN */
+.main{margin-left:var(--sidebar-w);flex:1;height:100vh;overflow-y:auto;padding:32px 36px;position:relative;z-index:1}
+.main::-webkit-scrollbar{width:5px}
+.main::-webkit-scrollbar-track{background:transparent}
+.main::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* TOPBAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:36px}
+.page-heading h1{font-family:'Orbitron',sans-serif;font-size:1.5rem;font-weight:600;letter-spacing:1px}
+.page-heading p{font-size:.85rem;color:var(--muted);margin-top:4px}
+.topbar-actions{display:flex;gap:12px;align-items:center}
+.search-box{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:8px 14px;font-size:.85rem;color:var(--muted);transition:border-color .2s}
+.search-box:hover{border-color:var(--accent)}
+.search-box input{background:transparent;border:none;outline:none;font-family:'Syne',sans-serif;font-size:.85rem;color:var(--text);width:150px}
+.search-box input::placeholder{color:var(--muted)}
+
+/* BUTTONS */
+.btn{padding:9px 18px;border-radius:10px;font-family:'Syne',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;border:none;transition:all .2s}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 0 20px rgba(59,130,246,.3)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 28px rgba(59,130,246,.45)}
+.btn-ghost{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+.btn-danger{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3)}
+.btn-danger:hover{background:rgba(239,68,68,.22)}
+.btn-success{background:linear-gradient(135deg,var(--green),#059669);color:#fff}
+.btn-success:hover{transform:translateY(-1px)}
+.btn-sm{padding:7px 14px;font-size:.77rem}
+
+/* PAGES */
+.page{display:none}
+.page.active{display:block}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.card-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.card-title{font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;letter-spacing:1px}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:32px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;position:relative;overflow:hidden;transition:transform .25s,border-color .25s}
+.stat-card:hover{transform:translateY(-3px);border-color:var(--accent)}
+.stat-card::after{content:'';position:absolute;top:-40px;right:-40px;width:100px;height:100px;border-radius:50%;opacity:.12}
+.stat-card.blue::after{background:var(--accent)}.stat-card.purple::after{background:var(--accent2)}.stat-card.cyan::after{background:var(--accent3)}.stat-card.green::after{background:var(--green)}
+.stat-label{font-size:.7rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+.stat-value{font-family:'Orbitron',sans-serif;font-size:2rem;font-weight:800;margin:8px 0 4px;line-height:1}
+.stat-card.blue .stat-value{color:var(--accent)}.stat-card.purple .stat-value{color:var(--accent2)}.stat-card.cyan .stat-value{color:var(--accent3)}.stat-card.green .stat-value{color:var(--green)}
+.stat-delta{font-size:.75rem;display:flex;align-items:center;gap:4px}
+.stat-delta.up{color:var(--green)}.stat-delta.down{color:var(--red)}
+.stat-icon{position:absolute;top:18px;right:18px;font-size:1.6rem;opacity:.55}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:.83rem}
+thead th{text-align:left;padding:12px 24px;font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:400;border-bottom:1px solid var(--border)}
+tbody tr{border-bottom:1px solid rgba(30,45,74,.5);transition:background .2s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:rgba(59,130,246,.05)}
+tbody td{padding:12px 24px;vertical-align:middle}
+
+.cell-name{display:flex;align-items:center;gap:12px}
+.cell-icon{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.cell-title{font-weight:600;font-size:.88rem}
+.cell-sub{font-size:.7rem;color:var(--muted)}
+
+.bar-wrap{background:var(--border);border-radius:99px;height:6px;width:100%;min-width:70px;overflow:hidden}
+.bar-fill{height:100%;border-radius:99px}
+
+.actions-cell{display:flex;gap:6px}
+.icon-btn{width:30px;height:30px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.82rem;transition:all .2s}
+.icon-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(59,130,246,.08)}
+.icon-btn.danger:hover{border-color:var(--red);color:var(--red);background:rgba(239,68,68,.08)}
+
+/* BADGES */
+.badge{font-size:.65rem;font-weight:600;padding:3px 10px;border-radius:99px}
+.badge-blue{background:rgba(59,130,246,.15);color:var(--accent)}
+.badge-green{background:rgba(16,185,129,.15);color:var(--green)}
+.badge-orange{background:rgba(245,158,11,.15);color:var(--orange)}
+.badge-red{background:rgba(239,68,68,.15);color:var(--red)}
+.badge-purple{background:rgba(168,85,247,.15);color:var(--accent2)}
+.badge-cyan{background:rgba(6,182,212,.15);color:var(--accent3)}
+.badge-muted{background:rgba(100,116,139,.15);color:var(--muted)}
+
+/* STATUS PILL */
+.status-pill{display:inline-flex;align-items:center;gap:5px;font-size:.7rem;font-weight:600;padding:3px 10px;border-radius:99px}
+.status-pill .dot{width:6px;height:6px;border-radius:50%}
+.status-pub{background:rgba(16,185,129,.12);color:var(--green)}.status-pub .dot{background:var(--green)}
+.status-rsc{background:rgba(245,158,11,.12);color:var(--orange)}.status-rsc .dot{background:var(--orange)}
+.status-drft{background:rgba(100,116,139,.12);color:var(--muted)}.status-drft .dot{background:var(--muted)}
+
+/* LAYOUT ROWS */
+.content-row{display:grid;grid-template-columns:1fr 340px;gap:20px;margin-bottom:24px}
+.bottom-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+.right-panel{display:flex;flex-direction:column;gap:20px}
+
+/* MINI LIST */
+.mini-list{padding:8px 0}
+.mini-item{display:flex;align-items:center;gap:12px;padding:11px 24px;border-bottom:1px solid rgba(30,45,74,.5);transition:background .2s}
+.mini-item:last-child{border-bottom:none}
+.mini-item:hover{background:rgba(59,130,246,.05)}
+.mini-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.mini-info{flex:1;min-width:0}
+.mini-title{font-size:.82rem;font-weight:600}
+.mini-sub{font-size:.7rem;color:var(--muted);margin-top:1px}
+.mini-time{font-size:.68rem;color:var(--muted)}
+
+/* QSTAT */
+.qstat-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)}
+.qstat-item{background:var(--card);padding:18px;text-align:center}
+.qstat-val{font-family:'Orbitron',sans-serif;font-size:1.4rem;font-weight:700}
+.qstat-lbl{font-size:.65rem;color:var(--muted);margin-top:3px;letter-spacing:1px;text-transform:uppercase}
+
+/* PROG */
+.prog-list{padding:16px 24px;display:flex;flex-direction:column;gap:18px}
+.prog-head{display:flex;justify-content:space-between;margin-bottom:6px;font-size:.8rem}
+.prog-pct{color:var(--muted);font-size:.75rem}
+
+/* FEED */
+.feed{padding:8px 0}
+.feed-item{display:flex;gap:12px;padding:12px 24px;border-bottom:1px solid rgba(30,45,74,.5)}
+.feed-item:last-child{border-bottom:none}
+.feed-dot{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0}
+.feed-text{font-size:.8rem;line-height:1.5}
+.feed-time{font-size:.68rem;color:var(--muted);margin-top:2px}
+
+/* FAB */
+.floating-add{position:fixed;bottom:32px;right:32px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:1.5rem;cursor:pointer;box-shadow:0 0 30px rgba(59,130,246,.5);border:none;color:white;z-index:200;transition:transform .3s}
+.floating-add:hover{transform:scale(1.1) rotate(90deg)}
+
+/* PLANET ICON BG */
+.p-mercury{background:linear-gradient(135deg,#8B7355,#6B5940)}
+.p-venus{background:linear-gradient(135deg,#E8C87D,#C9A84C)}
+.p-earth{background:linear-gradient(135deg,#4BA3C7,#2E7D9E)}
+.p-mars{background:linear-gradient(135deg,#C1440E,#8B2500)}
+.p-jupiter{background:linear-gradient(135deg,#C88B5A,#9B6B3A)}
+.p-saturn{background:linear-gradient(135deg,#E2C97E,#B8A050)}
+.p-uranus{background:linear-gradient(135deg,#7ECFC4,#4DAFA4)}
+.p-neptune{background:linear-gradient(135deg,#3B5EDD,#1E3FAB)}
+.p-custom{background:linear-gradient(135deg,var(--accent2),var(--accent))}
+
+/* ===== MODALS ===== */
+.modal-overlay{position:fixed;inset:0;background:rgba(3,7,18,.85);backdrop-filter:blur(6px);z-index:500;display:none;align-items:center;justify-content:center;padding:24px}
+.modal-overlay.open{display:flex}
+.modal-box{background:var(--card);border:1px solid var(--border);border-radius:20px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;animation:mIn .25s ease}
+.modal-box::-webkit-scrollbar{width:4px}
+.modal-box::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+@keyframes mIn{from{opacity:0;transform:scale(.96) translateY(8px)}to{opacity:1;transform:none}}
+.modal-header{padding:22px 28px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal-title{font-family:'Orbitron',sans-serif;font-size:.9rem;font-weight:600;letter-spacing:1px}
+.modal-close{width:30px;height:30px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.modal-close:hover{border-color:var(--red);color:var(--red)}
+.modal-body{padding:22px 28px}
+.modal-footer{padding:14px 28px 22px;display:flex;justify-content:flex-end;gap:10px}
+
+/* FORMS */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group.span2{grid-column:span 2}
+label{font-size:.68rem;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+input[type=text],input[type=number],input[type=email],input[type=password],select,textarea{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-family:'Syne',sans-serif;font-size:.85rem;color:var(--text);outline:none;transition:border-color .2s;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--accent)}
+select{cursor:pointer}
+select option{background:var(--card)}
+textarea{resize:vertical;min-height:80px}
+input::placeholder,textarea::placeholder{color:var(--muted)}
+
+/* PLANET VIEW MODAL */
+.view-header{display:flex;align-items:center;gap:18px;margin-bottom:22px}
+.view-icon{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0}
+.view-name{font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:700}
+.view-sub{font-size:.78rem;color:var(--muted);margin-top:3px}
+.view-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+.view-stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px}
+.view-stat-label{font-size:.62rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+.view-stat-value{font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:700;color:var(--accent);margin-top:4px}
+.view-desc{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;font-size:.82rem;line-height:1.7}
+
+/* DELETE */
+.del-icon{font-size:2.5rem;text-align:center;margin-bottom:10px}
+.del-title{font-family:'Orbitron',sans-serif;font-size:.95rem;font-weight:700;text-align:center;color:var(--red);margin-bottom:8px}
+.del-msg{font-size:.83rem;color:var(--muted);text-align:center;line-height:1.6}
+
+/* TOAST */
+#toast-container{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;flex-direction:column;gap:8px;pointer-events:none;align-items:center}
+.toast{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:11px 18px;font-size:.82rem;font-weight:600;display:flex;align-items:center;gap:10px;min-width:220px;box-shadow:0 8px 32px rgba(0,0,0,.5);animation:tIn .3s ease;pointer-events:auto}
+.toast.hide{animation:tOut .3s ease forwards}
+.toast-success{border-left:3px solid var(--green)}
+.toast-error{border-left:3px solid var(--red)}
+.toast-info{border-left:3px solid var(--accent)}
+@keyframes tIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes tOut{to{opacity:0;transform:translateY(14px)}}
+
+/* PAGE TOOLBAR */
+.page-toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;gap:12px;flex-wrap:wrap}
+.filter-tabs{display:flex;gap:4px;flex-wrap:wrap}
+.filter-tab{padding:6px 14px;border-radius:8px;font-size:.75rem;font-weight:600;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted);transition:all .2s;font-family:'Syne',sans-serif}
+.filter-tab.active,.filter-tab:hover{background:rgba(59,130,246,.1);border-color:var(--accent);color:var(--accent)}
+
+/* ARTIGOS */
+.article-card{display:flex;align-items:center;gap:16px;padding:16px 24px;border-bottom:1px solid rgba(30,45,74,.5);transition:background .2s}
+.article-card:last-child{border-bottom:none}
+.article-card:hover{background:rgba(59,130,246,.05)}
+.article-emoji{font-size:1.8rem;width:44px;text-align:center;flex-shrink:0}
+.article-info{flex:1;min-width:0}
+.article-title{font-size:.88rem;font-weight:600}
+.article-meta{font-size:.7rem;color:var(--muted);margin-top:3px}
+.article-summary{font-size:.75rem;color:var(--muted);margin-top:4px;line-height:1.5}
+
+/* GALLERY */
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;padding:20px 24px}
+.gallery-card{border-radius:12px;overflow:hidden;border:1px solid var(--border);cursor:pointer;transition:all .25s;position:relative}
+.gallery-card:hover{border-color:var(--accent);transform:scale(1.04)}
+.gallery-thumb{height:110px;display:flex;align-items:center;justify-content:center;font-size:2.5rem}
+.gallery-name{padding:8px 12px;font-size:.73rem;font-weight:600;background:rgba(0,0,0,.25)}
+.gallery-hover{position:absolute;inset:0;background:rgba(10,16,32,.75);display:none;align-items:center;justify-content:center;gap:8px}
+.gallery-card:hover .gallery-hover{display:flex}
+
+/* MISSÕES */
+.mission-card{padding:18px 24px;border-bottom:1px solid rgba(30,45,74,.5);display:flex;gap:16px;transition:background .2s}
+.mission-card:last-child{border-bottom:none}
+.mission-card:hover{background:rgba(59,130,246,.05)}
+.mission-icon{font-size:1.6rem;width:40px;text-align:center;flex-shrink:0;margin-top:2px}
+.mission-info{flex:1}
+.mission-name{font-size:.9rem;font-weight:700}
+.mission-agency{font-size:.72rem;color:var(--accent);font-weight:600;margin-bottom:3px}
+.mission-desc{font-size:.78rem;color:var(--muted);line-height:1.5}
+.mission-meta{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+
+/* NOTIFICAÇÕES */
+.notif-card{display:flex;align-items:flex-start;gap:14px;padding:15px 24px;border-bottom:1px solid rgba(30,45,74,.5);cursor:pointer;transition:background .2s}
+.notif-card:last-child{border-bottom:none}
+.notif-card:hover{background:rgba(59,130,246,.05)}
+.notif-card.unread{background:rgba(59,130,246,.04)}
+.notif-icon-wrap{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0}
+.notif-body{flex:1}
+.notif-title{font-size:.83rem;font-weight:600}
+.notif-sub{font-size:.74rem;color:var(--muted);margin-top:2px;line-height:1.4}
+.notif-time{font-size:.67rem;color:var(--muted);margin-top:4px}
+.notif-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:6px}
+
+/* CONFIGURAÇÕES */
+.settings-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);padding:0 24px}
+.stab{padding:14px 18px;font-size:.82rem;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;margin-bottom:-1px}
+.stab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.stab:hover{color:var(--text)}
+.spanel{display:none;padding:26px 24px}
+.spanel.active{display:block}
+.section-sep{font-size:.67rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px}
+.sgrid.c1{grid-template-columns:1fr;max-width:420px}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid rgba(30,45,74,.4)}
+.toggle-row:last-child{border-bottom:none}
+.toggle-label{font-size:.84rem;font-weight:600}
+.toggle-sub{font-size:.71rem;color:var(--muted);margin-top:2px}
+.toggle{position:relative;width:42px;height:22px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0;position:absolute}
+.tslider{position:absolute;inset:0;background:var(--border);border-radius:99px;cursor:pointer;transition:.3s}
+.tslider::before{content:'';position:absolute;width:16px;height:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.3s}
+.toggle input:checked+.tslider{background:var(--accent)}
+.toggle input:checked+.tslider::before{transform:translateX(20px)}
+.color-opts{display:flex;gap:10px;margin-top:8px}
+.color-dot{width:26px;height:26px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .2s}
+.color-dot.sel,.color-dot:hover{border-color:#fff;transform:scale(1.12)}
+.danger-zone{border:1px solid rgba(239,68,68,.3);border-radius:12px;padding:18px;background:rgba(239,68,68,.05);margin-top:24px}
+.danger-zone h3{font-size:.75rem;color:var(--red);font-weight:700;margin-bottom:10px;letter-spacing:1px;text-transform:uppercase}
+
+/* EMPTY */
+.empty-state{text-align:center;padding:44px 24px;color:var(--muted)}
+.empty-icon{font-size:2.8rem;margin-bottom:10px}
+
+/* USER AVATAR */
+.uav{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#fff;flex-shrink:0}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">🪐</div>
+    <div class="logo-title">COSMOS</div>
+    <div class="logo-sub">Painel Admin</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Principal</div>
+    <div class="nav-item active" data-page="dashboard"><span class="nav-icon">⊞</span> Dashboard</div>
+    <div class="nav-item" data-page="planetas"><span class="nav-icon">🪐</span> Planetas<span class="nav-badge" id="badge-planetas">8</span></div>
+    <div class="nav-item" data-page="estrelas"><span class="nav-icon">⭐</span> Estrelas</div>
+    <div class="nav-item" data-page="satelites"><span class="nav-icon">🌙</span> Satélites</div>
+    <div class="nav-item" data-page="asteroides"><span class="nav-icon">☄️</span> Asteroides<span class="nav-badge">4</span></div>
+    <div class="nav-section-label">Conteúdo</div>
+    <div class="nav-item" data-page="artigos"><span class="nav-icon">📝</span> Artigos<span class="nav-badge" id="badge-artigos">5</span></div>
+    <div class="nav-item" data-page="galeria"><span class="nav-icon">🖼️</span> Galeria</div>
+    <div class="nav-item" data-page="missoes"><span class="nav-icon">📡</span> Missões</div>
+    <div class="nav-section-label">Sistema</div>
+    <div class="nav-item" data-page="notificacoes"><span class="nav-icon">🔔</span> Notificações<span class="nav-badge red" id="badge-notif">3</span></div>
+    <div class="nav-item" data-page="usuarios"><span class="nav-icon">👥</span> Usuários</div>
+    <div class="nav-item" data-page="configuracoes"><span class="nav-icon">⚙️</span> Configurações</div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-card">
+      <div class="avatar">AG</div>
+      <div class="user-info"><div class="user-name">Astro Guia</div><div class="user-role">Administrador</div></div>
+      <span style="color:var(--muted);cursor:pointer" onclick="toast('Sessão encerrada!','info')">⏻</span>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div class="page-heading">
+      <h1 id="page-title">Dashboard</h1>
+      <p id="page-sub">Sistema Solar em tempo real</p>
+    </div>
+    <div class="topbar-actions">
+      <div class="search-box" id="search-wrap">🔍 <input id="search-input" type="text" placeholder="Buscar..." oninput="doSearch(this.value)"/></div>
+      <button class="btn btn-ghost" id="btn-sec" onclick="toast('Dados atualizados!','success')" style="display:none">↻ Atualizar</button>
+      <button class="btn btn-primary" id="btn-pri" onclick="handlePrimary()">+ Novo Planeta</button>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="page-dashboard" class="page active">
+    <div class="stats-grid">
+      <div class="stat-card blue"><div class="stat-icon">🪐</div><div class="stat-label">Total de Planetas</div><div class="stat-value" id="st-planetas">8</div><div class="stat-delta up">▲ Sistema Solar</div></div>
+      <div class="stat-card purple"><div class="stat-icon">📝</div><div class="stat-label">Artigos Publicados</div><div class="stat-value" id="st-artigos">5</div><div class="stat-delta up">▲ 12% este mês</div></div>
+      <div class="stat-card cyan"><div class="stat-icon">👁️</div><div class="stat-label">Visitas Hoje</div><div class="stat-value">9.3k</div><div class="stat-delta up">▲ 5% vs ontem</div></div>
+      <div class="stat-card green"><div class="stat-icon">🌙</div><div class="stat-label">Satélites Mapeados</div><div class="stat-value">290</div><div class="stat-delta up">▲ 8 novos</div></div>
+    </div>
+    <div class="content-row">
+      <div class="card">
+        <div class="card-header"><span class="card-title">PLANETAS DO SISTEMA SOLAR</span><span class="badge badge-blue" id="dash-count">8 corpos</span></div>
+        <table><thead><tr><th>Planeta</th><th>Tipo</th><th>Diâmetro (km)</th><th>Popularidade</th><th>Status</th><th>Ações</th></tr></thead>
+        <tbody id="dash-tbody"></tbody></table>
+      </div>
+      <div class="right-panel">
+        <div class="card">
+          <div class="card-header"><span class="card-title">VISÃO GERAL</span></div>
+          <div class="qstat-grid">
+            <div class="qstat-item"><div class="qstat-val" style="color:var(--accent)" id="qs-r">4</div><div class="qstat-lbl">Rochosos</div></div>
+            <div class="qstat-item"><div class="qstat-val" style="color:var(--accent2)" id="qs-g">2</div><div class="qstat-lbl">Gasosos</div></div>
+            <div class="qstat-item"><div class="qstat-val" style="color:var(--accent3)" id="qs-i">2</div><div class="qstat-lbl">Gelados</div></div>
+            <div class="qstat-item"><div class="qstat-val" style="color:var(--green)" id="qs-h">1</div><div class="qstat-lbl">Habitável</div></div>
+          </div>
+        </div>
+        <div class="card" style="flex:1">
+          <div class="card-header"><span class="card-title">ATIVIDADE RECENTE</span><span class="badge badge-purple">Ao vivo</span></div>
+          <div class="mini-list">
+            <div class="mini-item"><div class="mini-dot" style="background:var(--green)"></div><div class="mini-info"><div class="mini-title">Saturno atualizado</div><div class="mini-sub">Dados dos anéis revisados</div></div><div class="mini-time">2min</div></div>
+            <div class="mini-item"><div class="mini-dot" style="background:var(--accent)"></div><div class="mini-info"><div class="mini-title">Novo artigo: Marte</div><div class="mini-sub">Missão Perseverance 2025</div></div><div class="mini-time">18min</div></div>
+            <div class="mini-item"><div class="mini-dot" style="background:var(--orange)"></div><div class="mini-info"><div class="mini-title">Júpiter em revisão</div><div class="mini-sub">Aguardando aprovação</div></div><div class="mini-time">1h</div></div>
+            <div class="mini-item"><div class="mini-dot" style="background:var(--accent2)"></div><div class="mini-info"><div class="mini-title">Usuário cadastrado</div><div class="mini-sub">joao.estrela@cosmos.br</div></div><div class="mini-time">3h</div></div>
+            <div class="mini-item"><div class="mini-dot" style="background:var(--red)"></div><div class="mini-info"><div class="mini-title">Erro de imagem</div><div class="mini-sub">Urano — foto não carregou</div></div><div class="mini-time">5h</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-row">
+      <div class="card"><div class="card-header"><span class="card-title">POPULARIDADE</span></div><div class="prog-list" id="dash-pop"></div></div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">MISSÕES ATIVAS</span><span class="badge badge-green">3 em curso</span></div>
+        <div class="feed">
+          <div class="feed-item"><div class="feed-dot" style="background:var(--green)"></div><div><div class="feed-text"><strong>Perseverance</strong> — Coleta de amostras em Marte</div><div class="feed-time">Ativa desde 2021 · NASA</div></div></div>
+          <div class="feed-item"><div class="feed-dot" style="background:var(--green)"></div><div><div class="feed-text"><strong>JWST</strong> — Observação de exoplanetas</div><div class="feed-time">Ativa desde 2022 · NASA/ESA</div></div></div>
+          <div class="feed-item"><div class="feed-dot" style="background:var(--orange)"></div><div><div class="feed-text"><strong>Europa Clipper</strong> — Em rota para Júpiter</div><div class="feed-time">Lançada em 2024 · Chegada 2030</div></div></div>
+          <div class="feed-item"><div class="feed-dot" style="background:var(--muted)"></div><div><div class="feed-text"><strong>Voyager 1</strong> — Espaço interestelar</div><div class="feed-time">Ativa desde 1977 · 23 bilhões km</div></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">TAREFAS</span><span class="badge badge-orange">5 abertas</span></div>
+        <div class="mini-list">
+          <div class="mini-item" style="gap:12px"><input type="checkbox" style="accent-color:var(--accent);cursor:pointer"/><div class="mini-info"><div class="mini-title">Revisar dados de Urano</div><div class="mini-sub">Inclinação axial</div></div><span class="badge badge-orange">Alta</span></div>
+          <div class="mini-item" style="gap:12px"><input type="checkbox" style="accent-color:var(--accent);cursor:pointer"/><div class="mini-info"><div class="mini-title">Galeria de Netuno</div><div class="mini-sub">20 imagens do Voyager 2</div></div><span class="badge badge-blue">Média</span></div>
+          <div class="mini-item" style="gap:12px"><input type="checkbox" checked style="accent-color:var(--green);cursor:pointer"/><div class="mini-info" style="opacity:.5;text-decoration:line-through"><div class="mini-title">Publicar artigo Marte</div></div><span class="badge badge-green" style="opacity:.5">Feito</span></div>
+          <div class="mini-item" style="gap:12px"><input type="checkbox" style="accent-color:var(--accent);cursor:pointer"/><div class="mini-info"><div class="mini-title">Corrigir imagem Urano</div><div class="mini-sub">Erro 404 na capa</div></div><span class="badge badge-red">Urgente</span></div>
+          <div class="mini-item" style="gap:12px"><input type="checkbox" style="accent-color:var(--accent);cursor:pointer"/><div class="mini-info"><div class="mini-title">Mapear luas de Júpiter</div><div class="mini-sub">95 luas confirmadas</div></div><span class="badge badge-blue">Média</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLANETAS -->
+  <div id="page-planetas" class="page">
+    <div class="page-toolbar">
+      <div class="filter-tabs" id="planet-filters">
+        <button class="filter-tab active" onclick="setPlanetFilter(this,'')">Todos</button>
+        <button class="filter-tab" onclick="setPlanetFilter(this,'Rochoso')">🪨 Rochosos</button>
+        <button class="filter-tab" onclick="setPlanetFilter(this,'Gasoso')">💨 Gasosos</button>
+        <button class="filter-tab" onclick="setPlanetFilter(this,'Gelado')">🧊 Gelados</button>
+        <button class="filter-tab" onclick="setPlanetFilter(this,'Habitável')">🌱 Habitáveis</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">TODOS OS PLANETAS</span><span class="badge badge-blue" id="planet-badge">8 corpos</span></div>
+      <table><thead><tr><th>Planeta</th><th>Tipo</th><th>Diâmetro (km)</th><th>Dist. Sol (M km)</th><th>Satélites</th><th>Popularidade</th><th>Status</th><th>Ações</th></tr></thead>
+      <tbody id="planet-tbody"></tbody></table>
+    </div>
+  </div>
+
+  <!-- ESTRELAS -->
+  <div id="page-estrelas" class="page">
+    <div class="page-toolbar"><div></div><button class="btn btn-primary btn-sm" onclick="openGenericModal('estrela')">+ Nova Estrela</button></div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">CATÁLOGO DE ESTRELAS</span><span class="badge badge-orange">7 registradas</span></div>
+      <table><thead><tr><th>Estrela</th><th>Tipo Espectral</th><th>Distância</th><th>Temperatura (K)</th><th>Magnitude</th><th>Status</th><th>Ações</th></tr></thead>
+      <tbody id="star-tbody"></tbody></table>
+    </div>
+  </div>
+
+  <!-- SATÉLITES -->
+  <div id="page-satelites" class="page">
+    <div class="page-toolbar"><div></div><button class="btn btn-primary btn-sm" onclick="openGenericModal('satelite')">+ Novo Satélite</button></div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">SATÉLITES NATURAIS</span><span class="badge badge-purple">8 mapeados</span></div>
+      <table><thead><tr><th>Satélite</th><th>Planeta Pai</th><th>Diâmetro (km)</th><th>Descoberta</th><th>Destaque</th><th>Status</th><th>Ações</th></tr></thead>
+      <tbody id="sat-tbody"></tbody></table>
+    </div>
+  </div>
+
+  <!-- ASTEROIDES -->
+  <div id="page-asteroides" class="page">
+    <div class="page-toolbar"><div></div><button class="btn btn-primary btn-sm" onclick="openGenericModal('asteroide')">+ Novo Asteroide</button></div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">ASTEROIDES CATALOGADOS</span><span class="badge badge-red">4 registrados</span></div>
+      <table><thead><tr><th>Asteroide</th><th>Tipo</th><th>Diâmetro (km)</th><th>Dist. Terra (M km)</th><th>Risco</th><th>Status</th><th>Ações</th></tr></thead>
+      <tbody id="ast-tbody"></tbody></table>
+    </div>
+  </div>
+
+  <!-- ARTIGOS -->
+  <div id="page-artigos" class="page">
+    <div class="page-toolbar">
+      <div class="filter-tabs">
+        <button class="filter-tab active" onclick="setArticleFilter(this,'')">Todos</button>
+        <button class="filter-tab" onclick="setArticleFilter(this,'Publicado')">✅ Publicados</button>
+        <button class="filter-tab" onclick="setArticleFilter(this,'Revisão')">⏳ Revisão</button>
+        <button class="filter-tab" onclick="setArticleFilter(this,'Rascunho')">📝 Rascunhos</button>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="openArticleModal()">+ Novo Artigo</button>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">TODOS OS ARTIGOS</span><span class="badge badge-purple" id="article-badge">5 artigos</span></div>
+      <div id="article-list"></div>
+    </div>
+  </div>
+
+  <!-- GALERIA -->
+  <div id="page-galeria" class="page">
+    <div class="page-toolbar">
+      <div style="font-size:.83rem;color:var(--muted)">8 imagens · 124 MB utilizados</div>
+      <button class="btn btn-primary btn-sm" onclick="toast('Upload disponível em breve!','info')">⬆️ Upload Imagem</button>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">GALERIA DE IMAGENS</span><span class="badge badge-cyan">8 imagens</span></div>
+      <div class="gallery-grid" id="gallery-grid"></div>
+    </div>
+  </div>
+
+  <!-- MISSÕES -->
+  <div id="page-missoes" class="page">
+    <div class="page-toolbar"><div></div><button class="btn btn-primary btn-sm" onclick="toast('Nova missão adicionada!','success')">+ Nova Missão</button></div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">MISSÕES ESPACIAIS</span><span class="badge badge-green">7 registradas</span></div>
+      <div id="missions-list"></div>
+    </div>
+  </div>
+
+  <!-- NOTIFICAÇÕES -->
+  <div id="page-notificacoes" class="page">
+    <div class="page-toolbar">
+      <div style="font-size:.83rem;color:var(--muted)"><span id="notif-count-txt">3</span> não lidas</div>
+      <button class="btn btn-ghost btn-sm" onclick="markAllRead()">✓ Marcar todas como lidas</button>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">CENTRAL DE NOTIFICAÇÕES</span></div>
+      <div id="notif-list"></div>
+    </div>
+  </div>
+
+  <!-- USUÁRIOS -->
+  <div id="page-usuarios" class="page">
+    <div class="page-toolbar">
+      <div class="filter-tabs">
+        <button class="filter-tab active" onclick="setUserFilter(this,'')">Todos</button>
+        <button class="filter-tab" onclick="setUserFilter(this,'Administrador')">👑 Admins</button>
+        <button class="filter-tab" onclick="setUserFilter(this,'Editor')">✏️ Editores</button>
+        <button class="filter-tab" onclick="setUserFilter(this,'Visualizador')">👁️ Visualizadores</button>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="openUserModal()">+ Novo Usuário</button>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">GERENCIAMENTO DE USUÁRIOS</span><span class="badge badge-blue" id="user-badge">4 usuários</span></div>
+      <table><thead><tr><th>Usuário</th><th>E-mail</th><th>Cargo</th><th>Último Acesso</th><th>Status</th><th>Ações</th></tr></thead>
+      <tbody id="user-tbody"></tbody></table>
+    </div>
+  </div>
+
+  <!-- CONFIGURAÇÕES -->
+  <div id="page-configuracoes" class="page">
+    <div class="card">
+      <div class="settings-tabs">
+        <div class="stab active" onclick="switchStab(this,'spanel-perfil')">👤 Perfil</div>
+        <div class="stab" onclick="switchStab(this,'spanel-site')">🌐 Site</div>
+        <div class="stab" onclick="switchStab(this,'spanel-aparencia')">🎨 Aparência</div>
+        <div class="stab" onclick="switchStab(this,'spanel-seguranca')">🔒 Segurança</div>
+      </div>
+
+      <div id="spanel-perfil" class="spanel active">
+        <div class="section-sep">INFORMAÇÕES DO PERFIL</div>
+        <div class="sgrid"><div class="form-group"><label>Nome completo</label><input type="text" value="Astro Guia"/></div><div class="form-group"><label>Nome de exibição</label><input type="text" value="Astro"/></div><div class="form-group"><label>E-mail</label><input type="email" value="astro@cosmos.br"/></div><div class="form-group"><label>Cargo</label><select><option>Administrador</option><option>Editor</option><option>Visualizador</option></select></div><div class="form-group" style="grid-column:span 2"><label>Bio</label><textarea>Astrônomo e administrador do portal CosmosAdmin.</textarea></div></div>
+        <button class="btn btn-success" onclick="toast('Perfil salvo!','success')">💾 Salvar Perfil</button>
+      </div>
+
+      <div id="spanel-site" class="spanel">
+        <div class="section-sep">CONFIGURAÇÕES DO SITE</div>
+        <div class="sgrid"><div class="form-group"><label>Nome do site</label><input type="text" value="CosmosAdmin"/></div><div class="form-group"><label>URL</label><input type="text" value="https://cosmos.br"/></div><div class="form-group" style="grid-column:span 2"><label>Descrição</label><textarea>Portal educacional sobre astronomia e planetas.</textarea></div><div class="form-group"><label>Idioma</label><select><option>Português (BR)</option><option>English</option><option>Español</option></select></div><div class="form-group"><label>Fuso horário</label><select><option>América/São Paulo (UTC-3)</option><option>UTC</option></select></div></div>
+        <div class="section-sep">FUNCIONALIDADES</div>
+        <div style="margin-bottom:20px">
+          <div class="toggle-row"><div><div class="toggle-label">Modo Manutenção</div><div class="toggle-sub">Exibe aviso para visitantes</div></div><label class="toggle"><input type="checkbox"/><span class="tslider"></span></label></div>
+          <div class="toggle-row"><div><div class="toggle-label">Comentários</div><div class="toggle-sub">Permitir comentários nos artigos</div></div><label class="toggle"><input type="checkbox" checked/><span class="tslider"></span></label></div>
+          <div class="toggle-row"><div><div class="toggle-label">Busca avançada</div><div class="toggle-sub">Filtros por tipo e distância</div></div><label class="toggle"><input type="checkbox" checked/><span class="tslider"></span></label></div>
+        </div>
+        <button class="btn btn-success" onclick="toast('Configurações salvas!','success')">💾 Salvar</button>
+      </div>
+
+      <div id="spanel-aparencia" class="spanel">
+        <div class="section-sep">TEMA</div>
+        <div style="margin-bottom:20px">
+          <div class="toggle-row"><div><div class="toggle-label">Tema escuro</div><div class="toggle-sub">Interface com fundo escuro (recomendado)</div></div><label class="toggle"><input type="checkbox" checked/><span class="tslider"></span></label></div>
+          <div class="toggle-row"><div><div class="toggle-label">Estrelas animadas</div><div class="toggle-sub">Efeito de partículas no fundo</div></div><label class="toggle"><input type="checkbox" checked/><span class="tslider"></span></label></div>
+        </div>
+        <div class="section-sep">COR DE DESTAQUE</div>
+        <div class="form-group" style="margin-bottom:22px"><label>Escolha a cor principal</label>
+          <div class="color-opts">
+            <div class="color-dot sel" style="background:#3b82f6" onclick="pickColor(this,'#3b82f6')"></div>
+            <div class="color-dot" style="background:#a855f7" onclick="pickColor(this,'#a855f7')"></div>
+            <div class="color-dot" style="background:#06b6d4" onclick="pickColor(this,'#06b6d4')"></div>
+            <div class="color-dot" style="background:#10b981" onclick="pickColor(this,'#10b981')"></div>
+            <div class="color-dot" style="background:#f59e0b" onclick="pickColor(this,'#f59e0b')"></div>
+            <div class="color-dot" style="background:#ef4444" onclick="pickColor(this,'#ef4444')"></div>
+          </div>
+        </div>
+        <div class="sgrid"><div class="form-group"><label>Fonte principal</label><select><option>Syne</option><option>Orbitron</option><option>Space Mono</option></select></div><div class="form-group"><label>Tamanho de fonte</label><select><option>Pequeno (13px)</option><option selected>Médio (14px)</option><option>Grande (16px)</option></select></div></div>
+        <button class="btn btn-success" onclick="toast('Aparência atualizada!','success')">💾 Salvar Aparência</button>
+      </div>
+
+      <div id="spanel-seguranca" class="spanel">
+        <div class="section-sep">ALTERAR SENHA</div>
+        <div class="sgrid c1"><div class="form-group"><label>Senha atual</label><input type="password" placeholder="••••••••"/></div><div class="form-group"><label>Nova senha</label><input type="password" placeholder="••••••••"/></div><div class="form-group"><label>Confirmar nova senha</label><input type="password" placeholder="••••••••"/></div></div>
+        <button class="btn btn-success" style="margin-bottom:28px" onclick="toast('Senha alterada!','success')">🔒 Alterar Senha</button>
+        <div class="section-sep">AUTENTICAÇÃO</div>
+        <div style="margin-bottom:0">
+          <div class="toggle-row"><div><div class="toggle-label">Autenticação em 2 fatores (2FA)</div><div class="toggle-sub">Segurança extra via app autenticador</div></div><label class="toggle"><input type="checkbox"/><span class="tslider"></span></label></div>
+          <div class="toggle-row"><div><div class="toggle-label">Alerta de login suspeito</div><div class="toggle-sub">Notificar por e-mail em acessos desconhecidos</div></div><label class="toggle"><input type="checkbox" checked/><span class="tslider"></span></label></div>
+        </div>
+        <div class="danger-zone">
+          <h3>⚠️ Zona de Perigo</h3>
+          <p style="font-size:.78rem;color:var(--muted);margin-bottom:12px;line-height:1.5">Ações irreversíveis. Prossiga com cautela.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn btn-danger btn-sm" onclick="toast('Sessões encerradas em todos os dispositivos.','info')">Encerrar todas as sessões</button>
+            <button class="btn btn-danger btn-sm" onclick="toast('Solicitação de exclusão enviada.','error')">Excluir minha conta</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<button class="floating-add" onclick="handlePrimary()" title="Adicionar">＋</button>
+
+<!-- ===== MODAIS ===== -->
+
+<!-- MODAL PLANETA -->
+<div id="m-planeta" class="modal-overlay" onclick="outsideClose(event,'m-planeta')">
+  <div class="modal-box">
+    <div class="modal-header"><span class="modal-title" id="m-planeta-title">NOVO PLANETA</span><button class="modal-close" onclick="closeModal('m-planeta')">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="p-id"/>
+      <div class="form-grid">
+        <div class="form-group"><label>Ícone (emoji)</label><input type="text" id="p-icon" placeholder="🪐" maxlength="2"/></div>
+        <div class="form-group"><label>Nome</label><input type="text" id="p-name" placeholder="Ex: Mercúrio"/></div>
+        <div class="form-group"><label>Tipo</label><select id="p-type"><option value="">Selecionar...</option><option>Rochoso</option><option>Gasoso</option><option>Gelado</option><option>Habitável</option></select></div>
+        <div class="form-group"><label>Posição (nº)</label><input type="number" id="p-pos" placeholder="1" min="1"/></div>
+        <div class="form-group"><label>Diâmetro (km)</label><input type="number" id="p-diam" placeholder="12742"/></div>
+        <div class="form-group"><label>Dist. Sol (M km)</label><input type="number" id="p-dist" placeholder="149.6"/></div>
+        <div class="form-group"><label>Nº de satélites</label><input type="number" id="p-moons" placeholder="0" min="0"/></div>
+        <div class="form-group"><label>Temperatura (°C)</label><input type="number" id="p-temp" placeholder="-60"/></div>
+        <div class="form-group"><label>Popularidade (%)</label><input type="number" id="p-pop" placeholder="75" min="0" max="100"/></div>
+        <div class="form-group"><label>Status</label><select id="p-status"><option>Publicado</option><option>Revisão</option><option>Rascunho</option></select></div>
+        <div class="form-group span2"><label>Descrição</label><textarea id="p-desc" placeholder="Descreva o planeta..."></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('m-planeta')">Cancelar</button><button class="btn btn-primary" onclick="savePlanet()">💾 Salvar Planeta</button></div>
+  </div>
+</div>
+
+<!-- MODAL VER PLANETA -->
+<div id="m-view" class="modal-overlay" onclick="outsideClose(event,'m-view')">
+  <div class="modal-box">
+    <div class="modal-header"><span class="modal-title">DETALHES DO PLANETA</span><button class="modal-close" onclick="closeModal('m-view')">✕</button></div>
+    <div class="modal-body" id="view-body"></div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('m-view')">Fechar</button><button class="btn btn-primary" id="view-edit-btn">✏️ Editar</button></div>
+  </div>
+</div>
+
+<!-- MODAL DELETE -->
+<div id="m-delete" class="modal-overlay" onclick="outsideClose(event,'m-delete')">
+  <div class="modal-box" style="max-width:400px">
+    <div class="modal-header"><span class="modal-title" style="color:var(--red)">CONFIRMAR EXCLUSÃO</span><button class="modal-close" onclick="closeModal('m-delete')">✕</button></div>
+    <div class="modal-body"><div class="del-icon">🗑️</div><div class="del-title" id="del-title">Excluir?</div><div class="del-msg" id="del-msg">Esta ação não pode ser desfeita.</div></div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('m-delete')">Cancelar</button><button class="btn btn-danger" id="del-confirm">🗑️ Excluir</button></div>
+  </div>
+</div>
+
+<!-- MODAL ARTIGO -->
+<div id="m-artigo" class="modal-overlay" onclick="outsideClose(event,'m-artigo')">
+  <div class="modal-box">
+    <div class="modal-header"><span class="modal-title" id="m-artigo-title">NOVO ARTIGO</span><button class="modal-close" onclick="closeModal('m-artigo')">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="a-id"/>
+      <div class="form-grid">
+        <div class="form-group span2"><label>Título</label><input type="text" id="a-title" placeholder="Título do artigo"/></div>
+        <div class="form-group"><label>Categoria</label><select id="a-cat"><option>Planetas</option><option>Estrelas</option><option>Galáxias</option><option>Missões</option><option>Astrofísica</option></select></div>
+        <div class="form-group"><label>Status</label><select id="a-status"><option>Publicado</option><option>Revisão</option><option>Rascunho</option></select></div>
+        <div class="form-group"><label>Emoji / Capa</label><input type="text" id="a-emoji" placeholder="🌌" maxlength="2"/></div>
+        <div class="form-group"><label>Autor</label><input type="text" id="a-author" placeholder="Astro Guia"/></div>
+        <div class="form-group span2"><label>Resumo</label><textarea id="a-summary" placeholder="Breve descrição..." style="min-height:90px"></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('m-artigo')">Cancelar</button><button class="btn btn-primary" onclick="saveArticle()">💾 Salvar Artigo</button></div>
+  </div>
+</div>
+
+<!-- MODAL USUÁRIO -->
+<div id="m-usuario" class="modal-overlay" onclick="outsideClose(event,'m-usuario')">
+  <div class="modal-box">
+    <div class="modal-header"><span class="modal-title" id="m-usuario-title">NOVO USUÁRIO</span><button class="modal-close" onclick="closeModal('m-usuario')">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="u-id"/>
+      <div class="form-grid">
+        <div class="form-group"><label>Nome</label><input type="text" id="u-name" placeholder="Maria Cosmos"/></div>
+        <div class="form-group"><label>E-mail</label><input type="email" id="u-email" placeholder="maria@cosmos.br"/></div>
+        <div class="form-group"><label>Cargo</label><select id="u-role"><option>Administrador</option><option>Editor</option><option>Visualizador</option></select></div>
+        <div class="form-group"><label>Status</label><select id="u-status"><option>Ativo</option><option>Inativo</option></select></div>
+        <div class="form-group span2"><label>Senha inicial</label><input type="password" id="u-pass" placeholder="••••••••"/></div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('m-usuario')">Cancelar</button><button class="btn btn-primary" onclick="saveUser()">💾 Salvar Usuário</button></div>
+  </div>
+</div>
+
+<!-- MODAL GENÉRICO -->
+<div id="m-generic" class="modal-overlay" onclick="outsideClose(event,'m-generic')">
+  <div class="modal-box">
+    <div class="modal-header"><span class="modal-title" id="m-generic-title">NOVO ITEM</span><button class="modal-close" onclick="closeModal('m-generic')">✕</button></div>
+    <div class="modal-body" id="m-generic-body"></div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('m-generic')">Cancelar</button><button class="btn btn-primary" onclick="saveGeneric()">💾 Salvar</button></div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<script>
+// ===============================
+// NAVEGAÇÃO ENTRE PÁGINAS
+// ===============================
+const navItems = document.querySelectorAll(".nav-item");
+const pages = document.querySelectorAll(".page");
+const pageTitle = document.getElementById("page-title");
+const pageSub = document.getElementById("page-sub");
+const btnPri = document.getElementById("btn-pri");
+
+navItems.forEach(item => {
+  item.addEventListener("click", () => {
+    navItems.forEach(i => i.classList.remove("active"));
+    item.classList.add("active");
+
+    const page = item.dataset.page;
+
+    pages.forEach(p => p.classList.remove("active"));
+    document.getElementById("page-" + page).classList.add("active");
+
+    updateHeader(page);
+  });
+});
+
+function updateHeader(page){
+  const map = {
+    dashboard: ["Dashboard","Sistema Solar em tempo real","+ Novo Planeta"],
+    planetas: ["Planetas","Gerencie os planetas","+ Novo Planeta"],
+    estrelas: ["Estrelas","Catálogo estelar","+ Nova Estrela"],
+    satelites: ["Satélites","Luas e satélites","+ Novo Satélite"],
+    asteroides: ["Asteroides","Objetos espaciais","+ Novo Asteroide"],
+    artigos: ["Artigos","Conteúdo do site","+ Novo Artigo"],
+    usuarios: ["Usuários","Gerenciamento de contas","+ Novo Usuário"],
+    configuracoes: ["Configurações","Sistema e preferências","Salvar"],
+  };
+
+  pageTitle.innerText = map[page][0];
+  pageSub.innerText = map[page][1];
+  btnPri.innerText = map[page][2];
+}
+
+// ===============================
+// BOTÃO PRINCIPAL
+// ===============================
+function handlePrimary(){
+  const active = document.querySelector(".nav-item.active").dataset.page;
+
+  if(active === "planetas") openModal("m-planeta");
+  else if(active === "artigos") openModal("m-artigo");
+  else if(active === "usuarios") openModal("m-usuario");
+  else toast("Ação executada!", "info");
+}
+
+// ===============================
+// MODAIS
+// ===============================
+function openModal(id){
+  document.getElementById(id).classList.add("open");
+}
+
+function closeModal(id){
+  document.getElementById(id).classList.remove("open");
+}
+
+function outsideClose(e,id){
+  if(e.target.id === id){
+    closeModal(id);
+  }
+}
+
+// ===============================
+// TOAST (NOTIFICAÇÃO)
+// ===============================
+function toast(msg,type="info"){
+  const t = document.createElement("div");
+  t.className = "toast toast-" + type;
+  t.innerText = msg;
+
+  document.getElementById("toast-container").appendChild(t);
+
+  setTimeout(()=>{
+    t.classList.add("hide");
+    setTimeout(()=>t.remove(),300);
+  },2500);
+}
+
+// ===============================
+// CRUD FAKE PLANETA
+// ===============================
+function savePlanet(){
+  const name = document.getElementById("p-name").value;
+
+  if(!name){
+    toast("Digite um nome!", "error");
+    return;
+  }
+
+  toast("Planeta salvo com sucesso!", "success");
+  closeModal("m-planeta");
+
+  document.getElementById("p-name").value = "";
+}
+
+// ===============================
+// CRUD FAKE ARTIGO
+// ===============================
+function saveArticle(){
+  const title = document.getElementById("a-title").value;
+
+  if(!title){
+    toast("Digite um título!", "error");
+    return;
+  }
+
+  toast("Artigo salvo!", "success");
+  closeModal("m-artigo");
+}
+
+// ===============================
+// CRUD FAKE USUÁRIO
+// ===============================
+function saveUser(){
+  const name = document.getElementById("u-name").value;
+
+  if(!name){
+    toast("Digite um nome!", "error");
+    return;
+  }
+
+  toast("Usuário criado!", "success");
+  closeModal("m-usuario");
+}
+
+// ===============================
+// BUSCA (VISUAL)
+// ===============================
+function doSearch(val){
+  val = val.toLowerCase();
+
+  document.querySelectorAll("tbody tr").forEach(tr=>{
+    tr.style.display = tr.innerText.toLowerCase().includes(val) ? "" : "none";
+  });
+}
+
+// ===============================
+// FILTROS (SIMPLES)
+// ===============================
+function setPlanetFilter(btn, type){
+  document.querySelectorAll("#planet-filters .filter-tab")
+    .forEach(b => b.classList.remove("active"));
+
+  btn.classList.add("active");
+
+  document.querySelectorAll("#planet-tbody tr").forEach(tr=>{
+    if(!type || tr.innerText.includes(type)){
+      tr.style.display = "";
+    } else {
+      tr.style.display = "none";
+    }
+  });
+}
+
+// ===============================
+// NOTIFICAÇÕES
+// ===============================
+function markAllRead(){
+  toast("Todas notificações lidas!", "success");
+  document.getElementById("badge-notif").innerText = "0";
+}
+
+// ===============================
+// CONFIG TABS
+// ===============================
+function switchStab(el,id){
+  document.querySelectorAll(".stab").forEach(s=>s.classList.remove("active"));
+  el.classList.add("active");
+
+  document.querySelectorAll(".spanel").forEach(p=>p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+// ===============================
+// COR DINÂMICA
+// ===============================
+function pickColor(el,color){
+  document.querySelectorAll(".color-dot").forEach(d=>d.classList.remove("sel"));
+  el.classList.add("sel");
+
+  document.documentElement.style.setProperty("--accent", color);
+
+  toast("Cor alterada!", "success");
+}
+</script>

@@ -161,13 +161,15 @@ body {
 .busca input{
 box-shadow: 0px 0px 15px 10px #5900ff;
 border-radius: 10px;
+border: none;
+padding: 10px;
 }
 
 .tabelaplanetas{
   color: white;
   margin: 40px;
   width: 70%;
-  border: 1px solid red;
+
 }
 
 .tabelaplanetas h3{
@@ -186,7 +188,6 @@ th{
   background-image: linear-gradient(to top, #0f2027, #203a43, #2c5364);
   border-radius: 15px;
   overflow: hidden;
-  border: 1px solid red;
 }
 
 table{
@@ -207,7 +208,6 @@ table{
 
 .painelinf{
   display: flex;
-  border: 1px solid red;
 }
 
 .visgeral h3{
@@ -271,6 +271,7 @@ table{
   background-image: linear-gradient(to top, #0f2027, #203a43, #2c5364);
   border-radius: 15px;
   padding: 20px;
+  width: 100%;
 }
 
 .colunalateral{
@@ -281,9 +282,15 @@ table{
 
 .span{
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .span{
   padding: 20px;
+  border: 1px solid gray;
+  transition: all 0.3s ease;
+}
+
+.span:hover{
+  background-color: #008170;
 }
